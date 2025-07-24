@@ -1,2 +1,2 @@
 # ConfluentTerraform
-To manage Confluent resources using terraform
+To manage Confluent Cloud resources using terraform
