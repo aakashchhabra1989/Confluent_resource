@@ -5,7 +5,7 @@ This project manages Confluent Cloud infrastructure using Terraform with a modul
 ## 🏗️ Project Structure
 
 ```
-c:\Projects\Confluent_resource\
+confluent-resource-manager-aws\
 ├── main.tf                           # Root configuration (environment + module calls)
 ├── variables.tf                      # Root-level variables
 ├── outputs.tf                        # Root-level outputs
