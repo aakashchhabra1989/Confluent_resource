@@ -19,12 +19,12 @@ variable "environment_name" {
 }
 
 variable "environment_type" {
-  description = "Environment type (non-prod, prod)"
+  description = "Environment type (non-prod, prod, sandbox)"
   type        = string
   default     = "non-prod"
   validation {
-    condition     = contains(["non-prod", "prod"], var.environment_type)
-    error_message = "Environment type must be either 'non-prod' or 'prod'."
+    condition     = contains(["non-prod", "prod", "sandbox"], var.environment_type)
+    error_message = "Environment type must be either 'non-prod', 'prod', or 'sandbox'."
   }
 }
 
@@ -34,9 +34,9 @@ variable "sub_environments" {
   default     = ["dev"]
   validation {
     condition = alltrue([
-      for env in var.sub_environments : contains(["dev", "qa", "uat", "prod"], env)
+      for env in var.sub_environments : contains(["dev", "qa", "uat", "prod", "sandbox"], env)
     ])
-    error_message = "Sub-environments must be from: dev, qa, uat, prod."
+    error_message = "Sub-environments must be from: dev, qa, uat, prod, sandbox."
   }
 }
 

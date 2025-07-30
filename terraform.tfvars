@@ -18,7 +18,7 @@ aws_cluster_region = "us-east-1"
 
 # Topic Configuration for Sandbox
 create_aws_dummy_topic = true
-default_topic_partition = 6
+default_topic_partition = 3
 
 # Flink Configuration
 flink_max_cfu = 5  # Higher capacity for production

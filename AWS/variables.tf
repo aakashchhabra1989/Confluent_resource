@@ -12,7 +12,7 @@ variable "environment_resource_name" {
 }
 
 variable "environment_type" {
-  description = "Environment type (non-prod, prod)"
+  description = "Environment type (non-prod, prod, sandbox)"
   type        = string
   default     = "non-prod"
 }

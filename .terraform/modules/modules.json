@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"aws_cluster","Source":"./AWS","Dir":"AWS"},{"Key":"aws_cluster.sample_project","Source":"./sample_project","Dir":"AWS/sample_project"}]}

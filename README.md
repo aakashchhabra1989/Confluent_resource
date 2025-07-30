@@ -71,8 +71,8 @@ confluent-resource-manager-aws\
 - `confluent_cloud_api_secret`: Confluent Cloud API secret
 - `environment_id`: Environment ID for resource creation
 - `environment_resource_name`: Resource name for the environment
-- `environment_type`: Environment type (non-prod, prod)
-- `sub_environments`: List of sub-environments (dev, qa, uat for non-prod; prod for production)
+- `environment_type`: Environment type (non-prod, prod, sandbox)
+- `sub_environments`: List of sub-environments (dev, qa, uat for non-prod; prod for production; sandbox for sandbox)
 - `topic_base_prefix`: Base prefix for topic naming (`aws.myorg`)
 - `aws_cluster_name`: Name for the AWS Kafka cluster
 - `aws_cluster_region`: AWS region for cluster deployment
@@ -103,8 +103,8 @@ confluent-resource-manager-aws\
    ```hcl
    confluent_cloud_api_key    = "your-api-key"
    confluent_cloud_api_secret = "your-api-secret" 
-   environment_type           = "non-prod"  # or "prod"
-   sub_environments           = ["dev", "qa", "uat"]  # or ["prod"]
+   environment_type           = "non-prod"  # or "prod" or "sandbox"
+   sub_environments           = ["dev", "qa", "uat"]  # or ["prod"] or ["sandbox"]
    # ... other variables
    ```
 

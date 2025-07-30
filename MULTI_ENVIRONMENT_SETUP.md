@@ -148,7 +148,7 @@ AWS/sample_project/schemas/
 ### Root Variables (main.tf)
 - `environment_id`: Confluent environment ID
 - `environment_resource_name`: Environment resource name
-- `environment_type`: Environment type (non-prod, prod)
+- `environment_type`: Environment type (non-prod, prod, sandbox)
 - `sub_environments`: List of sub-environments to create
 - `topic_base_prefix`: Base prefix for topic naming (`aws.myorg`)
 

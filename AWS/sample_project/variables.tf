@@ -17,7 +17,7 @@ variable "environment_resource_name" {
 }
 
 variable "environment_type" {
-  description = "The type of environment (prod or non-prod)"
+  description = "The type of environment (prod, non-prod, or sandbox)"
   type        = string
 }
 
