@@ -1,0 +1,140 @@
+# HTTP Source Connector Configuration
+# This file creates an HTTP source connector to fetch JSON data from an API endpoint
+# and publish it to a Kafka topic every minute
+
+# Create a new topic for HTTP source data
+resource "confluent_kafka_topic" "http_source_topic" {
+  kafka_cluster {
+    id = confluent_kafka_cluster.basic.id
+  }
+
+  topic_name       = "${var.topic_prefix}.http_source_data.source-connector"
+  partitions_count = 3
+  
+  rest_endpoint = confluent_kafka_cluster.basic.rest_endpoint
+
+  credentials {
+    key    = confluent_api_key.admin_kafka_api_key.id
+    secret = confluent_api_key.admin_kafka_api_key.secret
+  }
+
+  config = {
+    "cleanup.policy"    = "delete"
+    "retention.ms"      = "604800000"  # 7 days
+    "max.message.bytes" = "1048576"    # 1MB
+  }
+
+  # Temporarily commenting out prevent_destroy to allow topic name change
+  # lifecycle {
+  #   # prevent_destroy = true
+  # }
+}
+
+# HTTP Source Connector
+resource "confluent_connector" "http_source" {
+  environment {
+    id = var.environment_id
+  }
+
+  kafka_cluster {
+    id = confluent_kafka_cluster.basic.id
+  }
+
+  config_sensitive = {}
+
+  config_nonsensitive = {
+    "connector.class"          = "HttpSource"
+    "name"                     = "HttpSourceConnector_${var.aws_cluster_name}"
+    "kafka.auth.mode"          = "KAFKA_API_KEY"
+    "kafka.api.key"            = confluent_api_key.admin_kafka_api_key.id
+    "kafka.api.secret"         = confluent_api_key.admin_kafka_api_key.secret
+    "topic.name.pattern"       = confluent_kafka_topic.http_source_topic.topic_name
+    "tasks.max"                = "1"
+    
+    # HTTP Configuration - using a reliable test JSON API
+    "url"                      = "https://jsonplaceholder.typicode.com/posts/1"
+    "method"                   = "GET"
+    "headers"                  = "Content-Type:application/json"
+    "request.interval.ms"      = "60000"  # 1 minute (60,000 ms)
+    
+    # Offset Configuration - using SIMPLE_INCREMENTING for API polling
+    "http.offset.mode"         = "SIMPLE_INCREMENTING"
+    "http.offset.field"        = "id"             # Use id field for incremental polling
+    "http.initial.offset"      = "0"              # Starting offset value (must be integer)
+    
+    # Output Configuration
+    "output.data.format"       = "JSON"
+    
+    # Error Handling - increased retry configuration
+    "max.retries"              = "5"
+    "retry.backoff.ms"         = "5000"
+    "request.timeout.ms"       = "30000"
+    
+    # Additional Headers (optional)
+    "user.agent"               = "Confluent-HTTP-Source-Connector"
+  }
+
+  depends_on = [
+    confluent_kafka_topic.http_source_topic,
+    confluent_kafka_acl.app_manager_create_topics,
+    confluent_kafka_acl.app_manager_write_topics
+  ]
+
+  lifecycle {
+    # prevent_destroy = true
+  }
+}
+
+# Create ACL for the connector to write to the topic
+resource "confluent_kafka_acl" "http_source_write" {
+  kafka_cluster {
+    id = confluent_kafka_cluster.basic.id
+  }
+
+  resource_type = "TOPIC"
+  resource_name = confluent_kafka_topic.http_source_topic.topic_name
+  pattern_type  = "LITERAL"
+  principal     = "User:${confluent_service_account.admin_manager.id}"
+  host          = "*"
+  operation     = "WRITE"
+  permission    = "ALLOW"
+
+  rest_endpoint = confluent_kafka_cluster.basic.rest_endpoint
+
+  credentials {
+    key    = confluent_api_key.admin_kafka_api_key.id
+    secret = confluent_api_key.admin_kafka_api_key.secret
+  }
+
+  # Temporarily commenting out prevent_destroy to allow topic name change
+  # lifecycle {
+  #   # prevent_destroy = true
+  # }
+}
+
+# Create ACL for the connector to read from the topic (for exactly-once semantics)
+resource "confluent_kafka_acl" "http_source_read" {
+  kafka_cluster {
+    id = confluent_kafka_cluster.basic.id
+  }
+
+  resource_type = "TOPIC"
+  resource_name = confluent_kafka_topic.http_source_topic.topic_name
+  pattern_type  = "LITERAL"
+  principal     = "User:${confluent_service_account.admin_manager.id}"
+  host          = "*"
+  operation     = "READ"
+  permission    = "ALLOW"
+
+  rest_endpoint = confluent_kafka_cluster.basic.rest_endpoint
+
+  credentials {
+    key    = confluent_api_key.admin_kafka_api_key.id
+    secret = confluent_api_key.admin_kafka_api_key.secret
+  }
+
+  # Temporarily commenting out prevent_destroy to allow topic name change
+  # lifecycle {
+  #   # prevent_destroy = true
+  # }
+}

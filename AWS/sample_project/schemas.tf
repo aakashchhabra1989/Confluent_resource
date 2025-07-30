@@ -1,0 +1,47 @@
+# AWS Schema Registry Resources
+# This file contains all Schema Registry related resources for AWS environment
+
+# Create Schema Registry Schemas for aws_dummy_topic_with_schema for each sub-environment
+resource "confluent_schema" "aws_dummy_topic_key_schema" {
+  for_each = toset(var.sub_environments)
+
+  schema_registry_cluster {
+    id = var.schema_registry_cluster_id
+  }
+  rest_endpoint = var.schema_registry_rest_endpoint
+  subject_name  = "${var.topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic_with_schema-key"
+  format        = "AVRO"
+  schema        = file("${path.module}/schemas/${upper(each.key)}/user_id_key.avsc")
+
+  credentials {
+    key    = var.schema_registry_api_key_id
+    secret = var.schema_registry_api_key_secret
+  }
+
+  # Temporarily commenting out prevent_destroy to allow schema name change
+  # lifecycle {
+  #   # prevent_destroy = true
+  # }
+}
+
+resource "confluent_schema" "aws_dummy_topic_value_schema" {
+  for_each = toset(var.sub_environments)
+
+  schema_registry_cluster {
+    id = var.schema_registry_cluster_id
+  }
+  rest_endpoint = var.schema_registry_rest_endpoint
+  subject_name  = "${var.topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic_with_schema-value"
+  format        = "AVRO"
+  schema        = file("${path.module}/schemas/${upper(each.key)}/user_profile_value.avsc")
+
+  credentials {
+    key    = var.schema_registry_api_key_id
+    secret = var.schema_registry_api_key_secret
+  }
+
+  # Temporarily commenting out prevent_destroy to allow schema name change
+  # lifecycle {
+  #   # prevent_destroy = true
+  # }
+}
