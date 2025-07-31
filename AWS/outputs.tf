@@ -110,27 +110,29 @@ output "admin_kafka_api_key_secret" {
 #   value       = module.sample_project.aws_dummy_topic_value_schema_versions
 # }
 
-# Schema Registry Outputs
-output "schema_registry_cluster_id" {
-  description = "The ID of the Schema Registry cluster"
-  value       = data.confluent_schema_registry_cluster.essentials.id
-}
+# COMMENTED OUT: Schema Registry Outputs (not available for basic clusters in sandbox)
+# Uncomment when using a dedicated or enterprise cluster with Schema Registry
 
-output "schema_registry_rest_endpoint" {
-  description = "The REST endpoint of the Schema Registry cluster"
-  value       = data.confluent_schema_registry_cluster.essentials.rest_endpoint
-}
+# output "schema_registry_cluster_id" {
+#   description = "The ID of the Schema Registry cluster"
+#   value       = data.confluent_schema_registry_cluster.essentials.id
+# }
 
-output "schema_registry_api_key_id" {
-  description = "The ID of the Schema Registry API key"
-  value       = confluent_api_key.schema_registry_api_key.id
-}
+# output "schema_registry_rest_endpoint" {
+#   description = "The REST endpoint of the Schema Registry cluster"
+#   value       = data.confluent_schema_registry_cluster.essentials.rest_endpoint
+# }
 
-output "schema_registry_api_key_secret" {
-  description = "The secret of the Schema Registry API key"
-  value       = confluent_api_key.schema_registry_api_key.secret
-  sensitive   = true
-}
+# output "schema_registry_api_key_id" {
+#   description = "The ID of the Schema Registry API key"
+#   value       = confluent_api_key.schema_registry_api_key.id
+# }
+
+# output "schema_registry_api_key_secret" {
+#   description = "The secret of the Schema Registry API key"
+#   value       = confluent_api_key.schema_registry_api_key.secret
+#   sensitive   = true
+# }
 
 # Flink Compute Pool Outputs
 output "flink_compute_pool_id" {
@@ -144,14 +146,17 @@ output "flink_compute_pool_id" {
 #   value       = module.sample_project.http_source_topic_names
 # }
 
-output "http_source_connector_ids" {
-  description = "The IDs of the HTTP source connectors"
-  value       = module.sample_project.http_source_connector_ids
-}
+# COMMENTED OUT: HTTP Source Connector Outputs (resource is commented out)
+# Uncomment these outputs when HTTP source connector is enabled
 
-output "http_source_connector_names" {
-  description = "The names of the HTTP source connectors"
-  value       = module.sample_project.http_source_connector_names
-}
+# output "http_source_connector_ids" {
+#   description = "The IDs of the HTTP source connectors"
+#   value       = module.sample_project.http_source_connector_ids
+# }
+
+# output "http_source_connector_names" {
+#   description = "The names of the HTTP source connectors"
+#   value       = module.sample_project.http_source_connector_names
+# }
 
 

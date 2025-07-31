@@ -1,9 +1,15 @@
 # Sample Project Module Variables
 # All variables needed for the sample project resources
 
+variable "project_name" {
+  description = "Project name to be included in resource naming"
+  type        = string
+  default     = "sample_project"
+}
+
 # Project name is hardcoded for this module
 locals {
-  project_name = "sample_project"
+  project_name = var.project_name
 }
 
 variable "environment_id" {

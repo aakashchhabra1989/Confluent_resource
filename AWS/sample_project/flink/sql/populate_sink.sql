@@ -1,6 +1,9 @@
--- Populate Sink Table
--- This SQL inserts processed data into the sink table
+-- Populate Daily User Registration Count Sink Table
+-- This SQL inserts daily user registration counts into the sink table
 
-INSERT INTO user_activity_sink 
-SELECT username, activity_count, window_start, window_end 
-FROM user_activity_summary;
+INSERT INTO tbl_${project_name}_daily_user_registration_sink 
+SELECT 
+  registration_date,
+  user_count,
+  CURRENT_TIMESTAMP as calculation_timestamp
+FROM vw_${project_name}_daily_user_registrations;

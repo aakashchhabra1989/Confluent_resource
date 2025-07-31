@@ -1,42 +1,43 @@
-# User Activity Stream - Flink SQL Statement
-# This file references external SQL file for better maintainability
-# COMMENTED OUT: Getting 401 Unauthorized error - likely due to Flink service not fully enabled
-# or missing specific Flink permissions in the Confluent Cloud environment
+# Daily User Registration Count Stream - Flink SQL Statement
+# This file references external SQL file for counting users registered on particular dates
 
-# resource "confluent_flink_statement" "user_activity_stream" {
+# COMMENTED OUT: Flink statement resources due to authorization issues
+# resource "confluent_flink_statement" "daily_user_registration_stream" {
 #   depends_on = [confluent_flink_statement.create_user_table]
-
+# 
 #   organization {
-#     id = data.confluent_organization.main.id
+#     id = var.organization_id
 #   }
-
+# 
 #   environment {
 #     id = var.environment_id
 #   }
-
+# 
 #   compute_pool {
-#     id = confluent_flink_compute_pool.main.id
+#     id = var.flink_compute_pool_id
 #   }
-
+# 
 #   principal {
-#     id = confluent_service_account.admin_manager.id
+#     id = var.admin_service_account_id
 #   }
-
-#   # Reference external SQL file
-#   statement = file("${path.module}/flink/sql/user_activity_stream.sql")
-
+# 
+#   # Reference external SQL file for daily user registration counting
+#   statement = templatefile("${path.module}/flink/sql/user_activity_stream.sql", {
+#     project_name = local.project_name
+#   })
+# 
 #   properties = {
 #     "sql.current-catalog"  = var.environment_id
-#     "sql.current-database" = confluent_kafka_cluster.basic.id
+#     "sql.current-database" = var.kafka_cluster_id
 #   }
-
+# 
 #   rest_endpoint = "https://flink.${var.aws_cluster_region}.${lower(var.aws_cluster_cloud)}.confluent.cloud"
-
+# 
 #   credentials {
-#     key    = confluent_api_key.admin_api_key.id
-#     secret = confluent_api_key.admin_api_key.secret
+#     key    = var.admin_kafka_api_key_id
+#     secret = var.admin_kafka_api_key_secret
 #   }
-
+# 
 #   lifecycle {
 #     prevent_destroy = true
 #   }

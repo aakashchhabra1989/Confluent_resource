@@ -42,7 +42,7 @@ resource "confluent_kafka_topic" "aws_dummy_topic_with_schema" {
   kafka_cluster {
     id = var.kafka_cluster_id
   }
-  topic_name       = "${var.topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic_with_schema"
+  topic_name       = "${var.topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic_with_schema.0"
   partitions_count = var.default_topic_partition
   rest_endpoint    = var.kafka_cluster_rest_endpoint
 
@@ -77,7 +77,7 @@ resource "confluent_kafka_topic" "http_source_topic" {
     id = var.kafka_cluster_id
   }
 
-  topic_name       = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector"
+  topic_name       = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
   partitions_count = 3
   
   rest_endpoint = var.kafka_cluster_rest_endpoint

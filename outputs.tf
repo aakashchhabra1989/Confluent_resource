@@ -133,27 +133,29 @@ output "connection_config" {
   sensitive = true
 }
 
-# Schema Registry Outputs
-output "schema_registry_cluster_id" {
-  description = "The ID of the Schema Registry cluster"
-  value       = module.aws_cluster.schema_registry_cluster_id
-}
+# COMMENTED OUT: Schema Registry Outputs (not available for basic clusters in sandbox)
+# Uncomment when using a dedicated or enterprise cluster with Schema Registry
 
-output "schema_registry_rest_endpoint" {
-  description = "The REST endpoint of the Schema Registry cluster"
-  value       = module.aws_cluster.schema_registry_rest_endpoint
-}
+# output "schema_registry_cluster_id" {
+#   description = "The ID of the Schema Registry cluster"
+#   value       = module.aws_cluster.schema_registry_cluster_id
+# }
 
-output "schema_registry_api_key_id" {
-  description = "The ID of the Schema Registry API key"
-  value       = module.aws_cluster.schema_registry_api_key_id
-}
+# output "schema_registry_rest_endpoint" {
+#   description = "The REST endpoint of the Schema Registry cluster"
+#   value       = module.aws_cluster.schema_registry_rest_endpoint
+# }
 
-output "schema_registry_api_key_secret" {
-  description = "The secret of the Schema Registry API key"
-  value       = module.aws_cluster.schema_registry_api_key_secret
-  sensitive   = true
-}
+# output "schema_registry_api_key_id" {
+#   description = "The ID of the Schema Registry API key"
+#   value       = module.aws_cluster.schema_registry_api_key_id
+# }
+
+# output "schema_registry_api_key_secret" {
+#   description = "The secret of the Schema Registry API key"
+#   value       = module.aws_cluster.schema_registry_api_key_secret
+#   sensitive   = true
+# }
 
 # Flink/Tableflow Outputs
 output "flink_compute_pool_id" {
@@ -167,12 +169,15 @@ output "flink_compute_pool_id" {
 #   value       = module.aws_cluster.http_source_topic_names
 # }
 
-output "http_source_connector_ids" {
-  description = "The IDs of the HTTP source connectors"
-  value       = module.aws_cluster.http_source_connector_ids
-}
+# COMMENTED OUT: HTTP Source Connector Outputs (resource is commented out)
+# Uncomment these outputs when HTTP source connector is enabled
 
-output "http_source_connector_names" {
-  description = "The names of the HTTP source connectors"
-  value       = module.aws_cluster.http_source_connector_names
-}
+# output "http_source_connector_ids" {
+#   description = "The IDs of the HTTP source connectors"
+#   value       = module.aws_cluster.http_source_connector_ids
+# }
+
+# output "http_source_connector_names" {
+#   description = "The names of the HTTP source connectors"
+#   value       = module.aws_cluster.http_source_connector_names
+# }

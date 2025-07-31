@@ -10,6 +10,7 @@ module "sample_project" {
   environment_type            = var.environment_type
   sub_environments            = var.sub_environments
   topic_base_prefix           = var.topic_base_prefix
+  project_name                = var.project_name
 
   # AWS cluster variables
   aws_cluster_name    = var.aws_cluster_name
@@ -29,10 +30,15 @@ module "sample_project" {
   app_manager_kafka_api_key_id         = confluent_api_key.app_manager_kafka_api_key.id
   app_manager_kafka_api_key_secret     = confluent_api_key.app_manager_kafka_api_key.secret
   admin_service_account_id             = confluent_service_account.admin_manager.id
-  schema_registry_cluster_id           = data.confluent_schema_registry_cluster.essentials.id
-  schema_registry_rest_endpoint        = data.confluent_schema_registry_cluster.essentials.rest_endpoint
-  schema_registry_api_key_id           = confluent_api_key.schema_registry_api_key.id
-  schema_registry_api_key_secret       = confluent_api_key.schema_registry_api_key.secret
+  # COMMENTED OUT: Schema Registry for sandbox environment (not available for basic clusters)
+  # schema_registry_cluster_id           = data.confluent_schema_registry_cluster.essentials.id
+  # schema_registry_rest_endpoint        = data.confluent_schema_registry_cluster.essentials.rest_endpoint
+  # schema_registry_api_key_id           = confluent_api_key.schema_registry_api_key.id
+  # schema_registry_api_key_secret       = confluent_api_key.schema_registry_api_key.secret
+  schema_registry_cluster_id           = ""
+  schema_registry_rest_endpoint        = ""
+  schema_registry_api_key_id           = ""
+  schema_registry_api_key_secret       = ""
   flink_compute_pool_id                = confluent_flink_compute_pool.main.id
   organization_id                      = data.confluent_organization.main.id
 }

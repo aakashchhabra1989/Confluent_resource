@@ -1,11 +1,9 @@
--- User Activity Stream Processing
--- This SQL creates a windowed aggregation of user activity
+-- Daily User Registration Count Stream Processing
+-- This SQL creates a view counting users registered on each particular date
 
-CREATE TABLE user_activity_summary AS
+CREATE VIEW vw_${project_name}_daily_user_registrations AS
 SELECT 
-  username,
-  COUNT(*) as activity_count,
-  TUMBLE_START(registrationDate, INTERVAL '1' HOUR) as window_start,
-  TUMBLE_END(registrationDate, INTERVAL '1' HOUR) as window_end
-FROM user_profiles
-GROUP BY username, TUMBLE(registrationDate, INTERVAL '1' HOUR);
+  registration_date_only as registration_date,
+  COUNT(DISTINCT id) as user_count
+FROM tbl_${project_name}_user_profiles_source
+GROUP BY registration_date_only;

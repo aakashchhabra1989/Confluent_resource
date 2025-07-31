@@ -26,7 +26,7 @@ variable "sub_environments" {
 variable "project_name" {
   description = "Project name to be included in resource naming"
   type        = string
-  default     = "sampleProject"
+  default     = "sample_project"
 }
 
 variable "schema_base_path" {
@@ -38,7 +38,7 @@ variable "schema_base_path" {
 variable "topic_base_prefix" {
   description = "Base prefix for topic names"
   type        = string
-  default     = "aws.sampleproject"
+  default     = "aws.myorg"
 }
 
 # AWS Cluster Configuration

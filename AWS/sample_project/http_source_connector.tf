@@ -19,7 +19,7 @@ resource "confluent_connector" "http_source" {
     "name"                = "HttpSourceConnector_${var.aws_cluster_name}_${each.key}_${local.project_name}"
     "kafka.auth.mode"     = "KAFKA_API_KEY"
     "kafka.api.key"       = var.admin_kafka_api_key_id
-    "topic.name.pattern"  = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector"
+    "topic.name.pattern"  = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
     "output.data.format"  = "JSON"
     "http.initial.offset" = "0"
     "http.offset.mode"    = "SIMPLE_INCREMENTING"
@@ -53,7 +53,7 @@ resource "confluent_kafka_acl" "http_source_read" {
     id = var.kafka_cluster_id
   }
   resource_type = "TOPIC"
-  resource_name = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector"
+  resource_name = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
   pattern_type  = "LITERAL"
   principal     = "User:${var.admin_service_account_id}"
   host          = "*"
@@ -75,7 +75,7 @@ resource "confluent_kafka_acl" "http_source_write" {
     id = var.kafka_cluster_id
   }
   resource_type = "TOPIC"
-  resource_name = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector"
+  resource_name = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
   pattern_type  = "LITERAL"
   principal     = "User:${var.admin_service_account_id}"
   host          = "*"

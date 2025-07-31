@@ -8,7 +8,7 @@ confluent_cloud_api_secret = "your-api-secret"
 environment_name = "non-prod-env"
 environment_type = "non-prod"
 sub_environments = ["dev", "qa", "uat"]
-project_name = "sampleProject"
+project_name = "sample_project"
 schema_base_path = "schemas"
 topic_base_prefix = "aws.myorg"
 

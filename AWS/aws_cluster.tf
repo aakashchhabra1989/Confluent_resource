@@ -45,6 +45,13 @@ resource "confluent_role_binding" "admin_environment_admin" {
   crn_pattern = var.environment_resource_name
 }
 
+# Create role binding for admin service account (Flink Admin)
+resource "confluent_role_binding" "admin_flink_admin" {
+  principal   = "User:${confluent_service_account.admin_manager.id}"
+  role_name   = "FlinkAdmin"
+  crn_pattern = var.environment_resource_name
+}
+
 # Create Admin API Key for the admin service account (Cloud API Key)
 resource "confluent_api_key" "admin_api_key" {
   display_name = "${var.aws_cluster_name}-admin-api-key"
@@ -56,7 +63,10 @@ resource "confluent_api_key" "admin_api_key" {
     kind        = confluent_service_account.admin_manager.kind
   }
 
-  depends_on = [confluent_role_binding.admin_environment_admin]
+  depends_on = [
+    confluent_role_binding.admin_environment_admin,
+    confluent_role_binding.admin_flink_admin
+  ]
 
   lifecycle {
     # prevent_destroy = true
@@ -84,7 +94,10 @@ resource "confluent_api_key" "admin_kafka_api_key" {
     }
   }
 
-  depends_on = [confluent_role_binding.admin_environment_admin]
+  depends_on = [
+    confluent_role_binding.admin_environment_admin,
+    confluent_role_binding.admin_flink_admin
+  ]
 
   lifecycle {
     # prevent_destroy = true
@@ -213,35 +226,38 @@ resource "confluent_kafka_acl" "app_manager_read_topics" {
   }
 }
 
-# Reference the existing Schema Registry Cluster
-data "confluent_schema_registry_cluster" "essentials" {
-  environment {
-    id = var.environment_id
-  }
-}
+# COMMENTED OUT: Schema Registry for sandbox environment (not available for basic clusters)
+# Uncomment when using a dedicated or enterprise cluster with Schema Registry
 
-# Create API Key for Schema Registry
-resource "confluent_api_key" "schema_registry_api_key" {
-  display_name = "schema-registry-api-key"
-  description  = "Schema Registry API Key that is owned by 'admin_manager' service account"
+# # Reference the existing Schema Registry Cluster
+# data "confluent_schema_registry_cluster" "essentials" {
+#   environment {
+#     id = var.environment_id
+#   }
+# }
 
-  owner {
-    id          = confluent_service_account.admin_manager.id
-    api_version = confluent_service_account.admin_manager.api_version
-    kind        = confluent_service_account.admin_manager.kind
-  }
+# # Create API Key for Schema Registry
+# resource "confluent_api_key" "schema_registry_api_key" {
+#   display_name = "schema-registry-api-key"
+#   description  = "Schema Registry API Key that is owned by 'admin_manager' service account"
 
-  managed_resource {
-    id          = data.confluent_schema_registry_cluster.essentials.id
-    api_version = data.confluent_schema_registry_cluster.essentials.api_version
-    kind        = data.confluent_schema_registry_cluster.essentials.kind
+#   owner {
+#     id          = confluent_service_account.admin_manager.id
+#     api_version = confluent_service_account.admin_manager.api_version
+#     kind        = confluent_service_account.admin_manager.kind
+#   }
 
-    environment {
-      id = var.environment_id
-    }
-  }
+#   managed_resource {
+#     id          = data.confluent_schema_registry_cluster.essentials.id
+#     api_version = data.confluent_schema_registry_cluster.essentials.api_version
+#     kind        = data.confluent_schema_registry_cluster.essentials.kind
 
-  lifecycle {
-    # prevent_destroy = true
-  }
-}
+#     environment {
+#       id = var.environment_id
+#     }
+#   }
+
+#   lifecycle {
+#     # prevent_destroy = true
+#   }
+# }
