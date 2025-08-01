@@ -73,7 +73,7 @@ confluent-resource-manager-aws\
 - `environment_resource_name`: Resource name for the environment
 - `environment_type`: Environment type (non-prod, prod, sandbox)
 - `sub_environments`: List of sub-environments (dev, qa, uat for non-prod; prod for production; sandbox for sandbox)
-- `topic_base_prefix`: Base prefix for topic naming (`aws.myorg`)
+- `aws_topic_base_prefix`: Base prefix for topic naming (`aws.myorg`)
 - `aws_cluster_name`: Name for the AWS Kafka cluster
 - `aws_cluster_region`: AWS region for cluster deployment
 - `aws_cluster_cloud`: Cloud provider (AWS)
@@ -233,6 +233,48 @@ aws.myorg.{environment}.{project_name}.{resource_name}
 | uat         | ✅ Deployed | 3 | 2 | 1 | 2 |
 | prod        | ✅ Deployed | 3 | 2 | 1 | 2 |
 | **Total**   | **✅ Active** | **12** | **8** | **4** | **8** |
+
+## 🛡️ Managing Resource Protection (prevent_destroy)
+
+All resources in this project are configured with `prevent_destroy = true` by default to protect against accidental deletion. You can manage this setting using the provided scripts:
+
+### Toggle prevent_destroy Settings
+
+**Windows (PowerShell):**
+```powershell
+# Enable protection (default)
+.\toggle_prevent_destroy.ps1 enable
+
+# Disable protection (for testing/development)
+.\toggle_prevent_destroy.ps1 disable
+```
+
+**Linux/macOS (Bash):**
+```bash
+# Enable protection (default)
+./toggle_prevent_destroy.sh enable
+
+# Disable protection (for testing/development)
+./toggle_prevent_destroy.sh disable
+```
+
+### Manual Management
+
+You can also manually edit the Terraform files to comment/uncomment lifecycle blocks:
+
+```hcl
+# To enable protection
+lifecycle {
+  prevent_destroy = true
+}
+
+# To disable protection
+# lifecycle {
+#   prevent_destroy = true
+# }
+```
+
+⚠️ **Important**: Always run `terraform plan` after changing prevent_destroy settings to validate the configuration.
 
 ## 🆘 Troubleshooting
 

@@ -10,7 +10,7 @@ environment_type = "non-prod"
 sub_environments = ["dev", "qa", "uat"]
 project_name = "sample_project"
 schema_base_path = "schemas"
-topic_base_prefix = "aws.myorg"
+aws_topic_base_prefix = "aws.myorg"
 
 aws_cluster_name         = "aws-non-prod-cluster"
 aws_cluster_availability = "SINGLE_ZONE"
@@ -23,3 +23,6 @@ default_topic_partition = 3
 # Flink/Tableflow Configuration
 flink_max_cfu = 5
 enable_flink  = true
+
+# Lifecycle Configuration
+

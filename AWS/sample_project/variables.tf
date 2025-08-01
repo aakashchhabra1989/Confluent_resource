@@ -32,7 +32,7 @@ variable "sub_environments" {
   type        = list(string)
 }
 
-variable "topic_base_prefix" {
+variable "aws_topic_base_prefix" {
   description = "Base prefix for topic naming"
   type        = string
 }

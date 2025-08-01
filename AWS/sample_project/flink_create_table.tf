@@ -39,6 +39,6 @@
 #   }
 # 
 #   lifecycle {
-#     prevent_destroy = true
+#     prevent_destroy = false
 #   }
 # }

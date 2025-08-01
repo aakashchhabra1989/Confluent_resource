@@ -12,7 +12,7 @@
 #     id = var.schema_registry_cluster_id
 #   }
 #   rest_endpoint = var.schema_registry_rest_endpoint
-#   subject_name  = "${var.topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic_with_schema-key"
+#   subject_name  = "${var.aws_topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic_with_schema-key"
 #   format        = "AVRO"
 #   schema        = file("${path.module}/schemas/${upper(each.key)}/user_id_key.avsc")
 
@@ -21,10 +21,9 @@
 #     secret = var.schema_registry_api_key_secret
 #   }
 
-#   # Temporarily commenting out prevent_destroy to allow schema name change
-#   # lifecycle {
-#   #   # prevent_destroy = true
-#   # }
+#   lifecycle {
+#     prevent_destroy = false
+#   }
 # }
 
 # resource "confluent_schema" "aws_dummy_topic_value_schema" {
@@ -34,7 +33,7 @@
 #     id = var.schema_registry_cluster_id
 #   }
 #   rest_endpoint = var.schema_registry_rest_endpoint
-#   subject_name  = "${var.topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic_with_schema-value"
+#   subject_name  = "${var.aws_topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic_with_schema-value"
 #   format        = "AVRO"
 #   schema        = file("${path.module}/schemas/${upper(each.key)}/user_profile_value.avsc")
 
@@ -43,8 +42,7 @@
 #     secret = var.schema_registry_api_key_secret
 #   }
 
-#   # Temporarily commenting out prevent_destroy to allow schema name change
-#   # lifecycle {
-#   #   # prevent_destroy = true
-#   # }
+#   lifecycle {
+#     prevent_destroy = false
+#   }
 # }

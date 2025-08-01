@@ -26,7 +26,7 @@
 #   statement = templatefile("${path.module}/flink/sql/create_sink_table.sql", {
 #     project_name         = local.project_name
 #     bootstrap_servers    = var.kafka_cluster_bootstrap_endpoint
-#     topic_name_prefix    = var.topic_base_prefix
+#     topic_name_prefix    = var.aws_topic_base_prefix
 #   })
 # 
 #   properties = {
@@ -42,7 +42,7 @@
 #   }
 # 
 #   lifecycle {
-#     prevent_destroy = true
+#     prevent_destroy = false
 #   }
 # }
 # 
@@ -84,6 +84,6 @@
 #   }
 # 
 #   lifecycle {
-#     prevent_destroy = true
+#     prevent_destroy = false
 #   }
 # }

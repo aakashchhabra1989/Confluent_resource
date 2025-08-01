@@ -22,7 +22,7 @@ resource "confluent_kafka_cluster" "basic" {
   }
 
   lifecycle {
-    # prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -30,12 +30,20 @@ resource "confluent_kafka_cluster" "basic" {
 resource "confluent_service_account" "app_manager" {
   display_name = "${var.aws_cluster_name}-app-manager"
   description  = "Service account to manage Kafka cluster ${var.aws_cluster_name}"
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 # Create an Admin Service Account for ACL management
 resource "confluent_service_account" "admin_manager" {
   display_name = "${var.aws_cluster_name}-admin-manager"
   description  = "Admin service account for ACL management in cluster ${var.aws_cluster_name}"
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 # Create role binding for admin service account (Environment Admin)
@@ -43,6 +51,10 @@ resource "confluent_role_binding" "admin_environment_admin" {
   principal   = "User:${confluent_service_account.admin_manager.id}"
   role_name   = "EnvironmentAdmin"
   crn_pattern = var.environment_resource_name
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 # Create role binding for admin service account (Flink Admin)
@@ -50,6 +62,10 @@ resource "confluent_role_binding" "admin_flink_admin" {
   principal   = "User:${confluent_service_account.admin_manager.id}"
   role_name   = "FlinkAdmin"
   crn_pattern = var.environment_resource_name
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 # Create Admin API Key for the admin service account (Cloud API Key)
@@ -69,7 +85,7 @@ resource "confluent_api_key" "admin_api_key" {
   ]
 
   lifecycle {
-    # prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -100,7 +116,7 @@ resource "confluent_api_key" "admin_kafka_api_key" {
   ]
 
   lifecycle {
-    # prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -125,7 +141,7 @@ resource "confluent_api_key" "app_manager_kafka_api_key" {
   }
 
   lifecycle {
-    # prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -150,7 +166,7 @@ resource "confluent_kafka_acl" "app_manager_describe_cluster" {
   }
 
   lifecycle {
-    # prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -174,7 +190,7 @@ resource "confluent_kafka_acl" "app_manager_create_topics" {
   }
 
   lifecycle {
-    # prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -198,7 +214,7 @@ resource "confluent_kafka_acl" "app_manager_write_topics" {
   }
 
   lifecycle {
-    # prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -222,7 +238,7 @@ resource "confluent_kafka_acl" "app_manager_read_topics" {
   }
 
   lifecycle {
-    # prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -258,6 +274,6 @@ resource "confluent_kafka_acl" "app_manager_read_topics" {
 #   }
 
 #   lifecycle {
-#     # prevent_destroy = true
+#     # prevent_destroy = false
 #   }
 # }

@@ -6,13 +6,15 @@ This directory contains various architecture diagrams for the Confluent Cloud Te
 
 ### 1. **ARCHITECTURE_DIAGRAMS.md** - Mermaid Diagrams
 - Comprehensive set of Mermaid flowcharts showing:
-  - Overall architecture overview
-  - Terraform module structure
-  - Multi-environment resource flow
-  - Resource naming conventions
-  - Deployment pipeline flow
-  - Data flow architecture
-  - Environment switching flow
+  - Overall architecture overview (with sandbox environment)
+  - Current deployment status (sandbox environment with 20 resources)
+  - Terraform module structure (with disabled components noted)
+  - Multi-environment resource flow (sandbox, dev, qa, uat, prod)
+  - Resource naming conventions (using aws_topic_base_prefix)
+  - Environment switching flow (including sandbox)
+  - Data flow architecture (current sandbox deployment)
+  - Connection endpoints and credentials
+  - Next steps and recommendations
 
 ### 2. **confluent-architecture.drawio** - Draw.io Diagram (Create this file)
 - Interactive Draw.io diagram
@@ -46,6 +48,30 @@ flowchart TD
 1. Right-click in the architecture folder
 2. Create new file with `.drawio` extension
 3. VS Code will automatically open the Draw.io editor
+
+## 🎯 Current Architecture Status
+
+### ✅ **Currently Deployed (Sandbox Environment):**
+- **Environment**: sandbox-env (env-7odpyp)
+- **Kafka Cluster**: aws-sandbox-cluster (lkc-7jqzvp) - Basic tier
+- **Region**: us-east-1
+- **Topics**: 3 Kafka topics
+- **Connectors**: 1 HTTP Source Connector (running)
+- **Flink**: 1 Compute Pool (5 CFU) - available but no active statements
+- **Service Accounts**: 2 (admin-manager, app-manager)
+- **API Keys**: 3 (admin, admin kafka, app manager kafka)
+- **ACLs**: 6 (service account and connector permissions)
+
+### ❌ **Disabled Components:**
+- **Schema Registry**: Not available in Basic cluster tier
+- **Flink SQL Statements**: Commented out due to API key authorization issues
+- **Multi-environment**: Currently single sandbox environment
+
+### 🔧 **Configuration:**
+- **Variable Prefix**: `aws_topic_base_prefix = "aws.myorg"`
+- **Lifecycle Protection**: `prevent_destroy = false` (all resources)
+- **Sub-environments**: `["sandbox"]`
+- **Topic Partitions**: 3 (default)
 
 ## 📋 Diagram Types Available
 

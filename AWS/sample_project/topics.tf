@@ -8,7 +8,7 @@ resource "confluent_kafka_topic" "aws_dummy_topic" {
   kafka_cluster {
     id = var.kafka_cluster_id
   }
-  topic_name       = "${var.topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic.0"
+  topic_name       = "${var.aws_topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic.0"
   partitions_count = var.default_topic_partition
   rest_endpoint    = var.kafka_cluster_rest_endpoint
 
@@ -29,10 +29,9 @@ resource "confluent_kafka_topic" "aws_dummy_topic" {
     secret = var.admin_kafka_api_key_secret
   }
 
-  # Temporarily commenting out prevent_destroy to allow topic name change
-  # lifecycle {
-  #   # prevent_destroy = true
-  # }
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 # Create a Kafka Topic with Avro Schema for each sub-environment
@@ -42,7 +41,7 @@ resource "confluent_kafka_topic" "aws_dummy_topic_with_schema" {
   kafka_cluster {
     id = var.kafka_cluster_id
   }
-  topic_name       = "${var.topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic_with_schema.0"
+  topic_name       = "${var.aws_topic_base_prefix}.${each.key}.${local.project_name}.dummy_topic_with_schema.0"
   partitions_count = var.default_topic_partition
   rest_endpoint    = var.kafka_cluster_rest_endpoint
 
@@ -63,10 +62,9 @@ resource "confluent_kafka_topic" "aws_dummy_topic_with_schema" {
     secret = var.admin_kafka_api_key_secret
   }
 
-  # Temporarily commenting out prevent_destroy to allow topic name change
-  # lifecycle {
-  #   # prevent_destroy = true
-  # }
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 # Create HTTP Source Topics for each sub-environment
@@ -77,7 +75,7 @@ resource "confluent_kafka_topic" "http_source_topic" {
     id = var.kafka_cluster_id
   }
 
-  topic_name       = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
+  topic_name       = "${var.aws_topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
   partitions_count = 3
   
   rest_endpoint = var.kafka_cluster_rest_endpoint
@@ -93,9 +91,8 @@ resource "confluent_kafka_topic" "http_source_topic" {
     "max.message.bytes" = "1048576"    # 1MB
   }
 
-  # Temporarily commenting out prevent_destroy to allow topic name change
-  # lifecycle {
-  #   prevent_destroy = true
-  # }
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 

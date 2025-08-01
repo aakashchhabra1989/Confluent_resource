@@ -9,7 +9,7 @@ module "sample_project" {
   environment_resource_name    = var.environment_resource_name
   environment_type            = var.environment_type
   sub_environments            = var.sub_environments
-  topic_base_prefix           = var.topic_base_prefix
+  aws_topic_base_prefix       = var.aws_topic_base_prefix
   project_name                = var.project_name
 
   # AWS cluster variables

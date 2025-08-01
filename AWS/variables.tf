@@ -35,7 +35,7 @@ variable "schema_base_path" {
   default     = "schemas"
 }
 
-variable "topic_base_prefix" {
+variable "aws_topic_base_prefix" {
   description = "Base prefix for topic names"
   type        = string
   default     = "aws.myorg"

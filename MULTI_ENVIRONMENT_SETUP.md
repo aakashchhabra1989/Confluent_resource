@@ -150,7 +150,7 @@ AWS/sample_project/schemas/
 - `environment_resource_name`: Environment resource name
 - `environment_type`: Environment type (non-prod, prod, sandbox)
 - `sub_environments`: List of sub-environments to create
-- `topic_base_prefix`: Base prefix for topic naming (`aws.myorg`)
+- `aws_topic_base_prefix`: Base prefix for topic naming (`aws.myorg`)
 
 ### Module Variables (sample_project/variables.tf)
 - AWS cluster configuration (cluster ID, endpoints, API keys)

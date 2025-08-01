@@ -43,8 +43,7 @@ resource "confluent_flink_compute_pool" "main" {
     id = var.environment_id
   }
 
-  # Temporarily commenting out prevent_destroy to allow environment recreation
-  # lifecycle {
-  #   prevent_destroy = true
-  # }
+  lifecycle {
+    prevent_destroy = false
+  }
 }

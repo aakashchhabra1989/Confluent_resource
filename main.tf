@@ -22,10 +22,9 @@ provider "confluent" {
 resource "confluent_environment" "main" {
   display_name = var.environment_name
 
-  # Temporarily commenting out prevent_destroy to allow environment recreation
-  # lifecycle {
-  #   prevent_destroy = true
-  # }
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 # AWS Cluster and Topics Module
@@ -39,7 +38,7 @@ module "aws_cluster" {
   sub_environments          = var.sub_environments
   project_name              = var.project_name
   schema_base_path          = var.schema_base_path
-  topic_base_prefix         = var.topic_base_prefix
+  aws_topic_base_prefix     = var.aws_topic_base_prefix
 
   # AWS cluster variables
   aws_cluster_name         = var.aws_cluster_name

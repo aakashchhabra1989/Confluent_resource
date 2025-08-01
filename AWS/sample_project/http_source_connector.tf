@@ -19,12 +19,12 @@ resource "confluent_connector" "http_source" {
     "name"                = "HttpSourceConnector_${var.aws_cluster_name}_${each.key}_${local.project_name}"
     "kafka.auth.mode"     = "KAFKA_API_KEY"
     "kafka.api.key"       = var.admin_kafka_api_key_id
-    "topic.name.pattern"  = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
+    "topic.name.pattern"  = "${var.aws_topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
     "output.data.format"  = "JSON"
     "http.initial.offset" = "0"
     "http.offset.mode"    = "SIMPLE_INCREMENTING"
     "http.offset.field"   = "id"
-    "url"                 = "https://jsonplaceholder.typicode.com/posts/1"
+    "url"                 = "https://jsonplaceholder.typicode.com/users"
     "method"              = "GET"
     "headers"             = "Content-Type:application/json"
     "request.interval.ms" = "60000"
@@ -39,10 +39,9 @@ resource "confluent_connector" "http_source" {
     "kafka.api.secret" = var.admin_kafka_api_key_secret
   }
 
-  # Temporarily commenting out prevent_destroy to allow connector changes
-  # lifecycle {
-  #   prevent_destroy = true
-  # }
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 # Create ACL for HTTP Source Connector to read from the topic for each sub-environment
@@ -53,7 +52,7 @@ resource "confluent_kafka_acl" "http_source_read" {
     id = var.kafka_cluster_id
   }
   resource_type = "TOPIC"
-  resource_name = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
+  resource_name = "${var.aws_topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
   pattern_type  = "LITERAL"
   principal     = "User:${var.admin_service_account_id}"
   host          = "*"
@@ -65,6 +64,10 @@ resource "confluent_kafka_acl" "http_source_read" {
     key    = var.admin_kafka_api_key_id
     secret = var.admin_kafka_api_key_secret
   }
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 # Create ACL for HTTP Source Connector to write to the topic for each sub-environment
@@ -75,7 +78,7 @@ resource "confluent_kafka_acl" "http_source_write" {
     id = var.kafka_cluster_id
   }
   resource_type = "TOPIC"
-  resource_name = "${var.topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
+  resource_name = "${var.aws_topic_base_prefix}.${each.key}.${local.project_name}.http_source_data.source-connector.0"
   pattern_type  = "LITERAL"
   principal     = "User:${var.admin_service_account_id}"
   host          = "*"
@@ -86,5 +89,9 @@ resource "confluent_kafka_acl" "http_source_write" {
   credentials {
     key    = var.admin_kafka_api_key_id
     secret = var.admin_kafka_api_key_secret
+  }
+
+  lifecycle {
+    prevent_destroy = false
   }
 }
